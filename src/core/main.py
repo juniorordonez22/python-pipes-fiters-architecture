@@ -11,21 +11,33 @@ def ManageOperations(folder_path):
     excel_files_data = FileOp.GetExcelFilesData(files_path)
     data_collection = FileOp.ConcatExcelFiles(excel_files_data)
     FileOp.SaveExcelFile(data_collection)
+
     # leer los datos del archivo
     all_excel_data = FileOp.GetExcelData()
     
+    # Filtro 1 (Normalizacion de texto)
     all_excel_data = TransformOp.NormalizeText(all_excel_data)
+
+    # Filtro 2 (Añadir columns Años de Contratacion)
     all_excel_data = TransformOp.AddColumnYearsOfHiring(all_excel_data)
     
+    # Filtro 3 (Filtrar solicitudes anuladas)
     all_excel_data = FilterDataOp.FilterAnulatedRequests(all_excel_data)
+
+    # Filtro 4 (Filtrar solicitudes de un año especifico)
     all_excel_data = FilterDataOp.FilterRequestsByYear(all_excel_data)
+
+    # Filtro 5 (Filtrar los montos menores a 5000 soles)
     all_excel_data = FilterDataOp.FilterAmountsBelowFiveThousand(all_excel_data)
 
+    # Convertir el iterable en un archivo Dataframe para evitar que se consuma
     import pandas
     all_excel_data = pandas.DataFrame(all_excel_data)
-    FileOp.SaveExcelFile(all_excel_data)
-
+    # Filtro 6 (Calcular el numero de ordenes de compra y servicio)
     N_OC , N_OS = CalcTO.CalcNumberOfPurchaseOrders(all_excel_data)
+
+    # Guardar el archivo (Receptor de Datos)
+    FileOp.SaveExcelFile(all_excel_data)
 
     return {
         "Numero de Ordenes de Servicio": N_OS , 

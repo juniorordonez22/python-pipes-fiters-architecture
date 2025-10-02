@@ -1,4 +1,4 @@
-from utils.window_utils import CenterWindow
+from utils.desktop_utils import CenterWindow
 from ui.desktop.interfaces.window_interfaces import BasicWindowActions   # Importacion desde la carpeta ui/
 from ui.desktop.controllers.main_window_controller import MainWindowController
 
